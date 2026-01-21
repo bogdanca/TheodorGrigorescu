@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theodor Grigorescu - Photographer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Using Inter font from Google Fonts for minimalist sans-serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">Theodor Grigorescu</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Albums</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Album Grid -->
+        <div class="album-grid">
+            <!-- Injected by main.js -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="copyright">
+            &copy; <span id="year"></span> Theodor Grigorescu
+        </div>
+        <div class="credits">
+            Website created by <a href="https://rekotech.ro">RekoTech.ro</a>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
