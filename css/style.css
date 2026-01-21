@@ -272,7 +272,7 @@ footer {
     max-height: 90vh;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transform: scale(0.95);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.2s ease;
 }
 
 .lightbox.active .lightbox-img {
@@ -294,4 +294,61 @@ footer {
 
 .lightbox-close:hover {
     transform: rotate(90deg) scale(1.1);
+}
+
+.lightbox-prev,
+.lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 3rem;
+    color: #333;
+    /* Dark gray to match theme against white bg */
+    cursor: pointer;
+    padding: 1rem;
+    z-index: 1001;
+    transition: all 0.2s ease;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+    left: 2rem;
+}
+
+.lightbox-next {
+    right: 2rem;
+}
+
+@media (max-width: 768px) {
+
+    .lightbox-prev,
+    .lightbox-next {
+        font-size: 2rem;
+        /* Smaller on mobile */
+        padding: 0.5rem;
+        opacity: 0.8;
+        /* More visible by default on touch */
+    }
+
+    .lightbox-prev {
+        left: 0.5rem;
+    }
+
+    .lightbox-next {
+        right: 0.5rem;
+    }
+
+    .lightbox-img {
+        max-width: 85%;
+        /* Ensure space for arrows */
+    }
 }

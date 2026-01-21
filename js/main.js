@@ -96,7 +96,7 @@ function renderAlbumPage() {
     const grid = document.querySelector('.photo-grid');
     if (grid) {
         grid.innerHTML = ''; // Clear current content just in case
-        album.images.forEach(imgSrc => {
+        album.images.forEach((imgSrc, index) => {
             const img = document.createElement('img');
             img.src = imgSrc;
             img.className = 'photo-item';
@@ -105,7 +105,7 @@ function renderAlbumPage() {
 
             // Add click for lightbox
             img.style.cursor = 'zoom-in';
-            img.addEventListener('click', () => openLightbox(imgSrc));
+            img.addEventListener('click', () => openLightbox(index, album.images));
 
             grid.appendChild(img);
         });
@@ -113,6 +113,9 @@ function renderAlbumPage() {
 }
 
 // Lightbox Logic
+let currentLightboxIndex = 0;
+let currentLightboxImages = [];
+
 function setupLightbox() {
     // Create lightbox DOM if not exists
     if (!document.querySelector('.lightbox')) {
@@ -120,6 +123,8 @@ function setupLightbox() {
         lightbox.className = 'lightbox';
         lightbox.innerHTML = `
             <button class="lightbox-close">&times;</button>
+            <button class="lightbox-prev">&#10094;</button>
+            <button class="lightbox-next">&#10095;</button>
             <img src="" alt="Full View" class="lightbox-img">
         `;
         document.body.appendChild(lightbox);
@@ -130,21 +135,53 @@ function setupLightbox() {
             if (e.target === lightbox) closeLightbox();
         });
 
-        // Escape key to close
+        // Navigation events
+        lightbox.querySelector('.lightbox-prev').addEventListener('click', (e) => {
+            e.stopPropagation();
+            changeLightboxImage(-1);
+        });
+        lightbox.querySelector('.lightbox-next').addEventListener('click', (e) => {
+            e.stopPropagation();
+            changeLightboxImage(1);
+        });
+
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                closeLightbox();
-            }
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+            if (e.key === 'ArrowRight') changeLightboxImage(1);
         });
     }
 }
 
-function openLightbox(src) {
+function openLightbox(index, images) {
     const lightbox = document.querySelector('.lightbox');
     const img = lightbox.querySelector('.lightbox-img');
-    img.src = src;
+    
+    currentLightboxIndex = index;
+    currentLightboxImages = images;
+    
+    img.src = currentLightboxImages[currentLightboxIndex];
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+function changeLightboxImage(direction) {
+    if (!currentLightboxImages.length) return;
+
+    currentLightboxIndex = (currentLightboxIndex + direction + currentLightboxImages.length) % currentLightboxImages.length;
+    
+    const lightbox = document.querySelector('.lightbox');
+    const img = lightbox.querySelector('.lightbox-img');
+    
+    // Add a small fade effect could be nice, but for now just switch
+    img.style.opacity = '0.5';
+    setTimeout(() => {
+        img.src = currentLightboxImages[currentLightboxIndex];
+        img.style.opacity = '1';
+    }, 150);
 }
 
 function closeLightbox() {
